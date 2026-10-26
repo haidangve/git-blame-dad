@@ -9,6 +9,8 @@ export type Progress = {
   teacherName?: string;
   memory?: string;
   year?: number;
+  /** Data URL (uploaded) or a path under /public (seeded). */
+  photo?: string;
 };
 
 type SaveFile = { v: 1; progress: Record<string, Progress> };
@@ -19,7 +21,7 @@ function seedProgress(): Record<string, Progress> {
   const out: Record<string, Progress> = {};
   for (const s of SKILLS) {
     if (s.done) {
-      out[s.id] = { done: true, teacher: s.teacher, teacherName: s.teacherName, memory: s.memory, year: s.year };
+      out[s.id] = { done: true, teacher: s.teacher, teacherName: s.teacherName, memory: s.memory, year: s.year, photo: s.photo };
     }
   }
   return out;
@@ -36,11 +38,14 @@ function readSave(): Record<string, Progress> | null {
   }
 }
 
-function writeSave(progress: Record<string, Progress>) {
+function writeSave(progress: Record<string, Progress>): boolean {
   try {
     window.localStorage.setItem(KEY, JSON.stringify({ v: 1, progress } satisfies SaveFile));
+    return true;
   } catch {
-    // Private mode or storage blocked: the game still works, it just won't remember.
+    // Private mode, storage blocked, or full (too many photos): the game keeps
+    // working, it just can't remember this change.
+    return false;
   }
 }
 
@@ -49,6 +54,7 @@ export function useSave() {
   // the saved file is swapped in after mount.
   const [progress, setProgress] = useState<Record<string, Progress>>(seedProgress);
   const [loaded, setLoaded] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
 
   useEffect(() => {
     const saved = readSave();
@@ -57,7 +63,7 @@ export function useSave() {
   }, []);
 
   useEffect(() => {
-    if (loaded) writeSave(progress);
+    if (loaded) setSaveFailed(!writeSave(progress));
   }, [progress, loaded]);
 
   const skills: Skill[] = useMemo(
@@ -71,6 +77,7 @@ export function useSave() {
           teacherName: p?.teacherName,
           memory: p?.memory,
           year: p?.year,
+          photo: p?.photo,
         };
       }),
     [progress],
@@ -95,7 +102,7 @@ export function useSave() {
   const resetToSeed = useCallback(() => setProgress(seedProgress()), []);
   const clearAll = useCallback(() => setProgress({}), []);
 
-  return { skills, totalXP, level, doneCount, complete, uncomplete, resetToSeed, clearAll };
+  return { skills, saveFailed, totalXP, level, doneCount, complete, uncomplete, resetToSeed, clearAll };
 }
 
 export type Save = ReturnType<typeof useSave>;

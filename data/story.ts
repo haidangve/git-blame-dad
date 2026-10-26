@@ -72,7 +72,8 @@ export const TEACHER_ORDER: Teacher[] = ["youtube", "reddit", "uncle", "friend",
 
 export const QUEST_LOG = {
   heading: "QUEST LOG",
-  blameButton: "RUN `git blame me`",
+  blameThreshold: 8,
+  blameButton: "RUN git blame me",
   blameLocked: (n: number) => `Complete ${n} more quest${n === 1 ? "" : "s"} to run git blame`,
   tutorial: "Tutorial ▶",
   settings: "SETTINGS",
@@ -87,6 +88,15 @@ export const MODAL = {
   yearLabel: "Year",
   save: "SAVE",
   cancel: "BACK",
+  uncheck: "Uncheck this quest",
+  photoLabel: "Photo of the moment (optional)",
+  photoAdd: "+ ADD PHOTO",
+  photoChange: "CHANGE",
+  photoRemove: "remove",
+  photoError: "Couldn't read that image. Try a JPG or PNG.",
+  viewPhoto: "View photo",
+  close: "CLOSE",
+  saveFailed: "Couldn't save the last change: storage is full or blocked. Try removing a photo.",
 };
 
 export const BLAME = {

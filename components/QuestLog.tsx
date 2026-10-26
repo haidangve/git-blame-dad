@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Region, Skill } from "@/data/skills";
-import { QUEST_LOG, REGIONS } from "@/data/story";
+import { MODAL, QUEST_LOG, REGIONS } from "@/data/story";
 import type { Save } from "@/hooks/useSave";
 import { Hero } from "./Hero";
 import { QuestCard } from "./QuestCard";
@@ -86,11 +86,12 @@ function Settings({ onReset }: { onReset: () => void }) {
 
 type Props = {
   save: Save;
-  onToggle: (skill: Skill) => void;
+  onToggle: (skill: Skill, rect: DOMRect) => void;
+  onViewPhoto: (skill: Skill) => void;
   footer?: React.ReactNode;
 };
 
-export function QuestLog({ save, onToggle, footer }: Props) {
+export function QuestLog({ save, onToggle, onViewPhoto, footer }: Props) {
   const [region, setRegion] = useState<Region>("grooming");
   const active = REGIONS.find((r) => r.id === region)!;
   const visible = save.skills.filter((s) => s.region === region);
@@ -112,6 +113,12 @@ export function QuestLog({ save, onToggle, footer }: Props) {
           <XPBar totalXP={save.totalXP} level={save.level} />
         </div>
       </header>
+
+      {save.saveFailed && (
+        <p role="alert" className="panel px-3 py-2 text-[20px] text-[#9b2a1c]">
+          {MODAL.saveFailed}
+        </p>
+      )}
 
       <nav role="tablist" aria-label="Regions" className="flex flex-wrap gap-2 pb-2">
         {REGIONS.map((r) => {
@@ -137,7 +144,7 @@ export function QuestLog({ save, onToggle, footer }: Props) {
 
       <section role="tabpanel" aria-label={active.name} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((s) => (
-          <QuestCard key={s.id} skill={s} onToggle={onToggle} />
+          <QuestCard key={s.id} skill={s} onToggle={onToggle} onViewPhoto={onViewPhoto} />
         ))}
       </section>
 

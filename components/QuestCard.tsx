@@ -2,13 +2,19 @@
 
 import { ICON_PALETTE } from "@/data/icons";
 import { tutorialUrl, type Skill } from "@/data/skills";
-import { QUEST_LOG, TEACHERS } from "@/data/story";
+import { MODAL, QUEST_LOG, TEACHERS } from "@/data/story";
 import { PixelSprite } from "./PixelSprite";
 
 const CHECK = ["......k", ".....kk", "k...kk.", "kk.kk..", ".kkk...", "..k...."];
 const INK = { k: "#2b1d0e" };
 
-export function QuestCard({ skill, onToggle }: { skill: Skill; onToggle: (skill: Skill) => void }) {
+type Props = {
+  skill: Skill;
+  onToggle: (skill: Skill, rect: DOMRect) => void;
+  onViewPhoto: (skill: Skill) => void;
+};
+
+export function QuestCard({ skill, onToggle, onViewPhoto }: Props) {
   const t = skill.teacher ? TEACHERS[skill.teacher] : null;
 
   return (
@@ -41,12 +47,24 @@ export function QuestCard({ skill, onToggle }: { skill: Skill; onToggle: (skill:
         )}
       </div>
 
+      {skill.done && skill.photo && (
+        <button
+          type="button"
+          onClick={() => onViewPhoto(skill)}
+          aria-label={`${MODAL.viewPhoto}: ${skill.title}`}
+          className="h-12 w-12 shrink-0 cursor-zoom-in self-center border-4 border-ink bg-ink"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={skill.photo} alt="" className="h-full w-full object-cover" />
+        </button>
+      )}
+
       <button
         type="button"
         role="checkbox"
         aria-checked={!!skill.done}
-        aria-label={`${skill.title}: ${skill.done ? "learned" : "not learned yet"}`}
-        onClick={() => onToggle(skill)}
+        aria-label={`${skill.title}: ${skill.done ? "learned. Edit entry" : "not learned yet"}`}
+        onClick={(e) => onToggle(skill, (e.currentTarget.closest("article") ?? e.currentTarget).getBoundingClientRect())}
         className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center self-center border-4 border-ink bg-parchment-hi hover:bg-white"
         style={{ background: skill.done ? "var(--lantern)" : undefined }}
       >

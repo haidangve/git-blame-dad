@@ -15,6 +15,7 @@ export type Skill = {
   teacherName?: string; // "Uncle Minh"
   memory?: string;
   year?: number;
+  photo?: string; // e.g. "/photos/tire.jpg" — drop the file in public/photos/
 };
 
 export const tutorialUrl = (query: string) =>
