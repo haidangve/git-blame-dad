@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type DragEvent, type FormEvent } from "react";
 import type { Skill, Teacher } from "@/data/skills";
 import { MODAL, TEACHER_ORDER, TEACHERS } from "@/data/story";
 import type { Progress } from "@/hooks/useSave";
@@ -25,7 +25,8 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
   const [memory, setMemory] = useState(skill.memory ?? "");
   const [year, setYear] = useState(String(skill.year ?? new Date().getFullYear()));
   const [photo, setPhoto] = useState<string | undefined>(skill.photo);
-  const [photoState, setPhotoState] = useState<"idle" | "loading" | "error">("idle");
+  const [photoState, setPhotoState] = useState<"idle" | "loading" | "error" | "heic">("idle");
+  const [dragging, setDragging] = useState(false);
   const firstRef = useRef<HTMLButtonElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -38,15 +39,52 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [onCancel]);
 
-  const pickPhoto = async (file: File | undefined) => {
+  const pickPhoto = async (files: FileList | File[] | null | undefined) => {
+    const list = Array.from(files ?? []);
+    const file = list.find((f) => f.type.startsWith("image/")) ?? list[0];
     if (!file) return;
     setPhotoState("loading");
     try {
       setPhoto(await compressPhoto(file));
       setPhotoState("idle");
     } catch {
-      setPhotoState("error");
+      // Chrome and Firefox can't decode iPhone HEIC; say so instead of a generic error.
+      setPhotoState(/\.hei[cf]$/i.test(file.name) || /hei[cf]/i.test(file.type) ? "heic" : "error");
     }
+  };
+
+  // Paste a copied image straight into the entry.
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const files = e.clipboardData?.files;
+      if (files?.length) {
+        e.preventDefault();
+        void pickPhoto(files);
+      }
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  });
+
+  // Dropping a file anywhere on the dialog (or its backdrop) attaches it, and
+  // never lets the browser navigate away to the dropped file.
+  const hasFiles = (e: DragEvent) => Array.from(e.dataTransfer.types).includes("Files");
+  const dragProps = {
+    onDragOver: (e: DragEvent) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      setDragging(true);
+    },
+    onDragLeave: (e: DragEvent) => {
+      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragging(false);
+    },
+    onDrop: (e: DragEvent) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      setDragging(false);
+      void pickPhoto(e.dataTransfer.files);
+    },
   };
 
   const submit = (e: FormEvent) => {
@@ -66,13 +104,15 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
       onMouseDown={(e) => e.target === e.currentTarget && onCancel()}
+      {...dragProps}
     >
       <form
         role="dialog"
         aria-modal="true"
         aria-labelledby="tm-title"
         onSubmit={submit}
-        className="panel modal-in max-h-[calc(100dvh-32px)] w-full max-w-2xl overflow-y-auto p-4 sm:p-5"
+        className="panel modal-in max-h-[calc(100dvh-32px)] w-full max-w-2xl overflow-y-auto p-4"
+        style={dragging ? { outline: "4px dashed var(--lantern)", outlineOffset: "4px" } : undefined}
       >
         <p className="text-[20px] text-ink/70">
           {editing ? "QUEST LOG ENTRY" : "QUEST CLEARED"} · {skill.title}
@@ -81,7 +121,7 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
           {MODAL.question}
         </h2>
 
-        <div role="radiogroup" aria-label={MODAL.question} className="mt-4 grid grid-cols-3 gap-2">
+        <div role="radiogroup" aria-label={MODAL.question} className="mt-3 grid grid-cols-3 gap-2">
           {TEACHER_ORDER.map((id, i) => {
             const t = TEACHERS[id];
             const selected = teacher === id;
@@ -96,7 +136,7 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
                   setTeacher(id);
                   sfx.select();
                 }}
-                className="flex cursor-pointer flex-col items-center gap-2 border-4 px-1 py-2 text-[19px] leading-none"
+                className="flex cursor-pointer flex-col items-center gap-1.5 border-4 px-1 py-1.5 text-[19px] leading-none"
                 style={{
                   borderColor: selected ? "var(--ink)" : t.color,
                   background: selected ? t.color : "var(--parchment-hi)",
@@ -110,7 +150,7 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
           })}
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
           <label className="block text-[20px]">
             Name
             <input
@@ -132,7 +172,7 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
             />
           </label>
         </div>
-        <label className="mt-3 block text-[20px]">
+        <label className="mt-2 block text-[20px]">
           Memory
           <input
             className={INPUT}
@@ -143,12 +183,15 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
           />
         </label>
 
-        <div className="mt-3 text-[20px]">
-          <span>{MODAL.photoLabel}</span>
+        <div
+          className="-mx-2 mt-1 border-4 border-dashed px-2 py-1 text-[20px]"
+          style={{ borderColor: dragging ? "var(--lantern-dim)" : "transparent", background: dragging ? "var(--parchment-hi)" : undefined }}
+        >
+          <label htmlFor="tm-photo">{MODAL.photoLabel}</label>
           <div className="mt-1 flex items-center gap-3">
             {photo && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={photo} alt={`Your photo for ${skill.title}`} className="h-16 w-16 border-4 border-ink object-cover" />
+              <img src={photo} alt={`Your photo for ${skill.title}`} className="h-14 w-14 border-4 border-ink object-cover" />
             )}
             <input
               ref={fileRef}
@@ -157,23 +200,26 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
               className="sr-only"
               id="tm-photo"
               onChange={(e) => {
-                void pickPhoto(e.target.files?.[0]);
+                void pickPhoto(e.target.files);
                 e.target.value = "";
               }}
             />
             <button type="button" className="btn btn-ghost px-3 py-2 text-[10px]" onClick={() => fileRef.current?.click()}>
               {photoState === "loading" ? "LOADING…" : photo ? MODAL.photoChange : MODAL.photoAdd}
             </button>
-            {photo && (
+            {photo ? (
               <button type="button" className="text-[20px] underline" onClick={() => setPhoto(undefined)}>
                 {MODAL.photoRemove}
               </button>
+            ) : (
+              <span className="text-ink/50">{dragging ? MODAL.photoDropNow : MODAL.photoDropHint}</span>
             )}
           </div>
           {photoState === "error" && <p className="mt-1 text-[#9b2a1c]">{MODAL.photoError}</p>}
+          {photoState === "heic" && <p className="mt-1 text-[#9b2a1c]">{MODAL.photoHeic}</p>}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center justify-end gap-3">
+        <div className="mt-3 flex flex-wrap items-center justify-end gap-3">
           {editing && (
             <button type="button" className="mr-auto text-[20px] underline" onClick={onUncheck}>
               {MODAL.uncheck}
