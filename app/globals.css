@@ -11,8 +11,6 @@
   --parchment-2: #d6c193;
   --parchment-hi: #f6ecd0;
   --ink: #2b1d0e;
-  --term: #39ff6a;
-  --term-dim: #1c8a3a;
 }
 
 @theme inline {
@@ -27,8 +25,6 @@
   --color-parchment-2: var(--parchment-2);
   --color-parchment-hi: var(--parchment-hi);
   --color-ink: var(--ink);
-  --color-term: var(--term);
-  --color-term-dim: var(--term-dim);
 }
 
 html,
@@ -175,22 +171,6 @@ body {
   animation: modal-in 120ms steps(3);
 }
 
-@keyframes crt-on {
-  0% {
-    transform: scale(0.6, 0.01);
-    filter: brightness(3);
-  }
-  55% {
-    transform: scale(1, 1);
-    filter: brightness(1.6);
-  }
-  100% {
-    filter: none;
-  }
-}
-.crt-on {
-  animation: crt-on 0.5s ease-out;
-}
 
 @keyframes fade-in {
   from {
@@ -201,19 +181,15 @@ body {
   animation: fade-in 3s ease-in;
 }
 
-.scanlines {
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, 0.28) 2px 4px),
-    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
-}
 
-.term-glow {
-  text-shadow: 0 0 6px rgba(57, 255, 106, 0.45);
-}
 
-.no-scrollbar {
-  scrollbar-width: none;
+
+@keyframes slide-in {
+  from {
+    transform: translateX(48px);
+    opacity: 0;
+  }
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.slide-in {
+  animation: slide-in 240ms steps(4);
 }

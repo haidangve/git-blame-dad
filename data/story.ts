@@ -1,6 +1,6 @@
 // All the words in the game that aren't skill titles live here. Edit freely.
 
-export type Teacher = "youtube" | "reddit" | "uncle" | "friend" | "mom" | "teacher" | "self" | "dad";
+export type Teacher = "youtube" | "reddit" | "uncle" | "aunt" | "friend" | "mom" | "teacher" | "self" | "dad";
 export type Region = "grooming" | "hands" | "money" | "people" | "inner";
 
 export const TITLE = {
@@ -36,6 +36,12 @@ export const TEACHERS: Record<Teacher, { label: string; short: string; color: st
     color: "#4f8fd9",
     icon: [".kkkkk.", "kkkkkkk", ".k.k.k.", ".kkkkk.", "..kkk..", ".kkkkk.", "kkkkkkk"],
   },
+  aunt: {
+    label: "Aunt",
+    short: "Aunt",
+    color: "#3fc1b0",
+    icon: ["..kkk..", ".kkkkk.", "..kkk..", ".kkkkk.", "kkkkkkk", ".kkkkk.", "kk...kk"],
+  },
   friend: {
     label: "Friend",
     short: "Friend",
@@ -68,7 +74,7 @@ export const TEACHERS: Record<Teacher, { label: string; short: string; color: st
   },
 };
 
-export const TEACHER_ORDER: Teacher[] = ["youtube", "reddit", "uncle", "friend", "mom", "teacher", "self", "dad"];
+export const TEACHER_ORDER: Teacher[] = ["youtube", "reddit", "uncle", "aunt", "friend", "mom", "teacher", "self", "dad"];
 
 export const QUEST_LOG = {
   heading: "QUEST LOG",
@@ -97,6 +103,29 @@ export const MODAL = {
   viewPhoto: "View photo",
   close: "CLOSE",
   saveFailed: "Couldn't save the last change: storage is full or blocked. Try removing a photo.",
+};
+
+export const RECAP = {
+  header: "git blame --life",
+  dadMeter: "DAD METER",
+  dadPresent: "Dad present",
+  showedUp: "Showed up",
+  noPhoto: "no photo, just the memory",
+  taughtBy: "TAUGHT BY",
+  prev: "◀",
+  next: "▶",
+  pause: "PAUSE",
+  play: "PLAY",
+  skip: "TALLY ▶▶",
+  tallyTitle: "THE TALLY",
+  questsCleared: "Quests cleared",
+  years: "Years on the road",
+  xp: "XP earned",
+  whoShowedUp: "WHO SHOWED UP",
+  dadShare: "DAD'S SHARE OF MY GROWING UP",
+  dadShareDetail: (quests: number, total: number, xp: number) =>
+    `${quests} of ${total} quests · ${xp} XP`,
+  continue: "CONTINUE ▶",
 };
 
 export const BLAME = {

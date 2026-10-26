@@ -21,7 +21,8 @@ export type Skill = {
 export const tutorialUrl = (query: string) =>
   `https://www.youtube.com/results?search_query=${encodeURIComponent(query).replace(/%20/g, "+")}`;
 
-// The demo opens with the `done: true` entries already checked.
+// The demo opens with every `done: true` entry already checked. "Arrange flowers"
+// and "BBQ & cook" are left open on purpose: they get checked live, with a photo.
 // Every seeded answer is a placeholder until you replace it with the real one.
 export const SKILLS: Skill[] = [
   // ── Grooming ──────────────────────────────────────────────
@@ -49,10 +50,16 @@ export const SKILLS: Skill[] = [
   {
     id: "nails", region: "grooming", title: "Cut your nails right", xp: 20,
     tutorialQuery: "how to cut fingernails and toenails properly", pixelIcon: ICONS.clipper,
+    // TODO(Kai): your real answer
+    done: true, teacher: "mom", teacherName: "Mom", year: 2009,
+    memory: "She did it for me until I was ten, then handed me the clippers.",
   },
   {
     id: "cologne", region: "grooming", title: "Pick a cologne", xp: 30,
     tutorialQuery: "how to choose a cologne for beginners", pixelIcon: ICONS.bottle,
+    // TODO(Kai): your real answer
+    done: true, teacher: "friend", teacherName: "Tuan", year: 2017,
+    memory: "Smelled every tester in the mall. He picked.",
   },
 
   // ── Hands ─────────────────────────────────────────────────
@@ -80,6 +87,9 @@ export const SKILLS: Skill[] = [
   {
     id: "tap", region: "hands", title: "Fix a leaky tap", xp: 60,
     tutorialQuery: "how to fix a leaky faucet", pixelIcon: ICONS.drop,
+    // TODO(Kai): your real answer
+    done: true, teacher: "youtube", teacherName: "YouTube", year: 2021,
+    memory: "First apartment. Wrong washer, twice.",
   },
   {
     id: "steak", region: "hands", title: "Grill a steak", xp: 50,
@@ -87,6 +97,16 @@ export const SKILLS: Skill[] = [
     // TODO(Kai): your real answer
     done: true, teacher: "friend", teacherName: "Tuan", year: 2018,
     memory: "His backyard. \"Stop poking it.\"",
+  },
+  {
+    // Real one: Mom. Checked live during the demo, with her photo.
+    id: "flowers", region: "hands", title: "Arrange flowers", xp: 60,
+    tutorialQuery: "how to arrange flowers in a vase for beginners", pixelIcon: ICONS.flower,
+  },
+  {
+    // Real one: my aunt. Checked live during the demo, with the BBQ photo.
+    id: "bbq", region: "hands", title: "BBQ & cook for family", xp: 80,
+    tutorialQuery: "how to bbq skewers on charcoal grill", pixelIcon: ICONS.pot,
   },
 
   // ── Money ─────────────────────────────────────────────────
@@ -107,10 +127,16 @@ export const SKILLS: Skill[] = [
   {
     id: "salary", region: "money", title: "Negotiate salary", xp: 100,
     tutorialQuery: "how to negotiate salary job offer", pixelIcon: ICONS.coin,
+    // TODO(Kai): your real answer
+    done: true, teacher: "reddit", teacherName: "r/cscareerquestions", year: 2023,
+    memory: "Read every thread, then asked for 10% more. Got it.",
   },
   {
     id: "credit", region: "money", title: "Build credit", xp: 70,
     tutorialQuery: "how to build credit from scratch", pixelIcon: ICONS.card,
+    // TODO(Kai): your real answer
+    done: true, teacher: "self", teacherName: "Trial & Error", year: 2018,
+    memory: "Missed one payment. Learned it the expensive way.",
   },
 
   // ── People ────────────────────────────────────────────────
@@ -124,10 +150,16 @@ export const SKILLS: Skill[] = [
   {
     id: "askout", region: "people", title: "Ask someone out", xp: 80,
     tutorialQuery: "how to ask someone out confidently", pixelIcon: ICONS.heart,
+    // TODO(Kai): your real answer
+    done: true, teacher: "friend", teacherName: "Tuan", year: 2016,
+    memory: "He walked me to her locker and then just left.",
   },
   {
     id: "apologise", region: "people", title: "Apologise properly", xp: 70,
     tutorialQuery: "how to apologize sincerely", pixelIcon: ICONS.speech,
+    // TODO(Kai): your real answer
+    done: true, teacher: "mom", teacherName: "Mom", year: 2015,
+    memory: "Say what you did, not what you meant.",
   },
   {
     id: "breakup", region: "people", title: "Handle a breakup", xp: 90,
@@ -141,17 +173,29 @@ export const SKILLS: Skill[] = [
   {
     id: "notokay", region: "inner", title: "Say \"I'm not okay\"", xp: 120,
     tutorialQuery: "how to tell someone you are not okay", pixelIcon: ICONS.sadFace,
+    // TODO(Kai): your real answer
+    done: true, teacher: "teacher", teacherName: "Ms. Lan", year: 2019,
+    memory: "School counsellor. She just waited until I said it.",
   },
   {
     id: "cry", region: "inner", title: "Cry without shame", xp: 120,
     tutorialQuery: "why it is okay for men to cry", pixelIcon: ICONS.tear,
+    // TODO(Kai): your real answer
+    done: true, teacher: "friend", teacherName: "Tuan", year: 2020,
+    memory: "He didn't make it weird.",
   },
   {
     id: "anger", region: "inner", title: "Control anger", xp: 100,
     tutorialQuery: "how to control anger techniques", pixelIcon: ICONS.calm,
+    // TODO(Kai): your real answer
+    done: true, teacher: "teacher", teacherName: "Coach Daniel", year: 2014,
+    memory: "\"Run it off first. Then we talk.\"",
   },
   {
     id: "help", region: "inner", title: "Ask for help", xp: 120,
     tutorialQuery: "how to ask for help when you need it", pixelIcon: ICONS.lifebuoy,
+    // TODO(Kai): your real answer
+    done: true, teacher: "uncle", teacherName: "Uncle Minh", year: 2022,
+    memory: "He drove four hours when I finally called.",
   },
 ];

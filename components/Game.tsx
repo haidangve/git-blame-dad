@@ -6,7 +6,7 @@ import { QUEST_LOG } from "@/data/story";
 import type { Progress } from "@/hooks/useSave";
 import { useSave } from "@/hooks/useSave";
 import { sfx } from "@/hooks/useSound";
-import { BlameTerminal } from "./BlameTerminal";
+import { BlameCarousel } from "./BlameCarousel";
 import { MuteToggle } from "./MuteToggle";
 import { PhotoViewer } from "./PhotoViewer";
 import { QuestLog } from "./QuestLog";
@@ -101,7 +101,7 @@ export function Game() {
     <>
       {screen === "title" && <TitleScreen onStart={start} />}
       {screen === "log" && <QuestLog save={save} onToggle={toggle} onViewPhoto={setViewing} footer={footer} />}
-      {screen === "blame" && <BlameTerminal skills={save.skills} onExit={toLog} onStartOwn={startOwn} />}
+      {screen === "blame" && <BlameCarousel skills={save.skills} onExit={toLog} onStartOwn={startOwn} />}
       {pending && <TeacherModal skill={pending.skill} onSave={onSave} onCancel={closeModal} onUncheck={onUncheck} />}
       {viewing && <PhotoViewer skill={viewing} onClose={closeViewer} />}
       <XPPops pops={pops} />

@@ -15,7 +15,8 @@ export type Progress = {
 
 type SaveFile = { v: 1; progress: Record<string, Progress> };
 
-const KEY = "questlog.save.v1";
+// Bump when the seeded answers change, so a demo browser picks up the new seed.
+const KEY = "questlog.save.v2";
 
 function seedProgress(): Record<string, Progress> {
   const out: Record<string, Progress> = {};

@@ -81,7 +81,7 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
           {MODAL.question}
         </h2>
 
-        <div role="radiogroup" aria-label={MODAL.question} className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div role="radiogroup" aria-label={MODAL.question} className="mt-4 grid grid-cols-3 gap-2">
           {TEACHER_ORDER.map((id, i) => {
             const t = TEACHERS[id];
             const selected = teacher === id;
