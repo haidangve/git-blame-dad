@@ -1,0 +1,102 @@
+// All the words in the game that aren't skill titles live here. Edit freely.
+
+export type Teacher = "youtube" | "reddit" | "uncle" | "friend" | "mom" | "teacher" | "self" | "dad";
+export type Region = "grooming" | "hands" | "money" | "people" | "inner";
+
+export const TITLE = {
+  title: "QUEST LOG",
+  subtitle: "Skills I was supposed to learn from my dad.",
+  start: "PRESS START",
+};
+
+export const REGIONS: { id: Region; name: string; blurb: string }[] = [
+  { id: "grooming", name: "Grooming", blurb: "The bathroom-mirror lessons. Usually learned the morning you needed them." },
+  { id: "hands", name: "Hands", blurb: "Things you fix in a parking lot while pretending you've done it before." },
+  { id: "money", name: "Money", blurb: "Nobody explains this part. You find out by getting it wrong once." },
+  { id: "people", name: "People", blurb: "Talking to humans. No tutorial covers the second attempt." },
+  { id: "inner", name: "Inner", blurb: "The hardest region. No XP bar shows how long these take." },
+];
+
+export const TEACHERS: Record<Teacher, { label: string; short: string; color: string; icon: string[] }> = {
+  youtube: {
+    label: "YouTube",
+    short: "YouTube",
+    color: "#e04b3a",
+    icon: ["kkkkkkk", "kkwkkkk", "kkwwkkk", "kkwwwkk", "kkwwkkk", "kkwkkkk", "kkkkkkk"],
+  },
+  reddit: {
+    label: "Reddit / Forums",
+    short: "Reddit",
+    color: "#ff7a2f",
+    icon: ["...k...", "..kkk..", ".k.k.k.", "kkkkkkk", "k.k.k.k", "kkkkkkk", ".k...k."],
+  },
+  uncle: {
+    label: "Uncle",
+    short: "Uncle",
+    color: "#4f8fd9",
+    icon: [".kkkkk.", "kkkkkkk", ".k.k.k.", ".kkkkk.", "..kkk..", ".kkkkk.", "kkkkkkk"],
+  },
+  friend: {
+    label: "Friend",
+    short: "Friend",
+    color: "#5fbf6a",
+    icon: [".k...k.", "kkk.kkk", ".k...k.", "kkk.kkk", "kkkkkkk", "k.kkk.k", "k.k.k.k"],
+  },
+  mom: {
+    label: "Mom",
+    short: "Mom",
+    color: "#d870b0",
+    icon: [".kk.kk.", "kkkkkkk", "kkkkkkk", "kkkkkkk", ".kkkkk.", "..kkk..", "...k..."],
+  },
+  teacher: {
+    label: "Teacher / Coach",
+    short: "Coach",
+    color: "#8f6ad6",
+    icon: ["kkkkkkk", "k.....k", "k.kkk.k", "k.....k", "kkkkkkk", "...k...", "..kkk.."],
+  },
+  self: {
+    label: "Trial & Error",
+    short: "Trial&Error",
+    color: "#a8a8a8",
+    icon: ["..kkk..", ".k...k.", ".....k.", "....k..", "...k...", ".......", "...k..."],
+  },
+  dad: {
+    label: "Dad",
+    short: "Dad",
+    color: "#f2a93b",
+    icon: ["..kkk..", ".kkkkk.", ".kkkkk.", "..kkk..", ".kkkkk.", "kkkkkkk", "kkkkkkk"],
+  },
+};
+
+export const TEACHER_ORDER: Teacher[] = ["youtube", "reddit", "uncle", "friend", "mom", "teacher", "self", "dad"];
+
+export const QUEST_LOG = {
+  heading: "QUEST LOG",
+  blameButton: "RUN `git blame me`",
+  blameLocked: (n: number) => `Complete ${n} more quest${n === 1 ? "" : "s"} to run git blame`,
+  tutorial: "Tutorial ▶",
+  settings: "SETTINGS",
+  resetSave: "Reset save",
+  resetConfirm: "Back to Kai's save?",
+};
+
+export const MODAL = {
+  question: "WHO TAUGHT YOU THIS?",
+  namePlaceholder: "Their name (optional), e.g. Uncle Minh",
+  memoryPlaceholder: "One line of memory, e.g. summer 2012, in the parking lot",
+  yearLabel: "Year",
+  save: "SAVE",
+  cancel: "BACK",
+};
+
+export const BLAME = {
+  // TODO(Kai): your name for the final commit
+  authorName: "Kai Nguyen",
+  // TODO(Kai): your final line. Left blank, the game uses defaultFinalLine.
+  finalLine: "",
+  defaultFinalLine: "I'll teach these myself. Every line.",
+  epilogue: "QUEST LOG — for the kids still figuring it out alone.",
+  startOwn: "START YOUR OWN QUEST",
+  helpLine:
+    "If you're going through something heavier, talk to someone you trust, or look up a mentoring program like Big Brothers Big Sisters.",
+};
