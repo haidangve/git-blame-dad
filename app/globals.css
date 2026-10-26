@@ -42,6 +42,8 @@ body {
   font-size: 22px;
   line-height: 1.15;
   -webkit-font-smoothing: none;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0;
 }
 
 .pixelated {
@@ -207,4 +209,11 @@ body {
 
 .term-glow {
   text-shadow: 0 0 6px rgba(57, 255, 106, 0.45);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

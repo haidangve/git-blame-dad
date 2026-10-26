@@ -6,6 +6,7 @@ import { QUEST_LOG } from "@/data/story";
 import type { Progress } from "@/hooks/useSave";
 import { useSave } from "@/hooks/useSave";
 import { sfx } from "@/hooks/useSound";
+import { BlameTerminal } from "./BlameTerminal";
 import { MuteToggle } from "./MuteToggle";
 import { PhotoViewer } from "./PhotoViewer";
 import { QuestLog } from "./QuestLog";
@@ -13,7 +14,7 @@ import { TeacherModal } from "./TeacherModal";
 import { TitleScreen } from "./TitleScreen";
 import { XPPops, type Pop } from "./XPPop";
 
-type Screen = "title" | "log";
+type Screen = "title" | "log" | "blame";
 
 export function Game() {
   const save = useSave();
@@ -24,6 +25,23 @@ export function Game() {
   const popId = useRef(0);
 
   const start = useCallback(() => setScreen("log"), []);
+  const toLog = useCallback(() => setScreen("log"), []);
+  const startOwn = useCallback(() => {
+    save.clearAll();
+    setScreen("log");
+  }, [save]);
+
+  // Hidden demo key: "B" jumps straight to git blame, ignoring the unlock threshold.
+  useEffect(() => {
+    if (screen !== "log" || pending || viewing) return;
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable)) return;
+      if (e.key === "b" || e.key === "B") setScreen("blame");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [screen, pending, viewing]);
   const closeModal = useCallback(() => setPending(null), []);
   const closeViewer = useCallback(() => setViewing(null), []);
 
@@ -72,7 +90,7 @@ export function Game() {
   const need = Math.max(0, QUEST_LOG.blameThreshold - save.doneCount);
   const footer = (
     <div className="flex flex-col items-center gap-3 pb-16">
-      <button type="button" className="btn text-[12px] sm:text-[14px]" disabled={need > 0}>
+      <button type="button" className="btn text-[12px] sm:text-[14px]" disabled={need > 0} onClick={() => setScreen("blame")}>
         ▶ {QUEST_LOG.blameButton}
       </button>
       {need > 0 && <p className="text-[20px] text-parchment/70">{QUEST_LOG.blameLocked(need)}</p>}
@@ -83,6 +101,7 @@ export function Game() {
     <>
       {screen === "title" && <TitleScreen onStart={start} />}
       {screen === "log" && <QuestLog save={save} onToggle={toggle} onViewPhoto={setViewing} footer={footer} />}
+      {screen === "blame" && <BlameTerminal skills={save.skills} onExit={toLog} onStartOwn={startOwn} />}
       {pending && <TeacherModal skill={pending.skill} onSave={onSave} onCancel={closeModal} onUncheck={onUncheck} />}
       {viewing && <PhotoViewer skill={viewing} onClose={closeViewer} />}
       <XPPops pops={pops} />
