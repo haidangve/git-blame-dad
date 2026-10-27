@@ -6,6 +6,12 @@ A pixel-art RPG quest log of the things boys are supposed to pick up from their 
 
 Built for a hackathon with the theme *"Build something that tells your story."*
 
+![Title screen: git blame --dad, a pixel kid with a backpack under a night sky](docs/screenshots/title.png)
+
+| The quest log | The tally |
+|---|---|
+| ![Quest log at level 17 with every Grooming quest checked and who taught each one](docs/screenshots/quest-log.png) | ![The tally: a bar for each teacher who showed up, and Dad's share of growing up](docs/screenshots/tally.png) |
+
 ## The story
 
 My dad wasn't around. Everything other boys learned from their fathers I learned from YouTube, Reddit, my mom, my uncle, my aunt, my friends, a coach, or by failing on my own. This app is that list, and a thank-you to the people who did show up.
