@@ -81,7 +81,7 @@ export function TitleScreen({ onStart }: { onStart: () => void }) {
 
       <div className="relative z-10 flex flex-col items-center gap-6">
         <h1
-          className="font-pixel text-[32px] leading-none text-lantern sm:text-[56px]"
+          className="font-pixel text-[20px] leading-none text-lantern sm:text-[44px]"
           style={{ textShadow: "4px 4px 0 #000, -4px 0 0 #6b3d0a" }}
         >
           {TITLE.title}

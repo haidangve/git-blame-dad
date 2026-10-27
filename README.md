@@ -1,4 +1,4 @@
-# QUEST LOG
+# git blame --dad
 
 **Skills I was supposed to learn from my dad.**
 

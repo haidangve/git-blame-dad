@@ -4,7 +4,7 @@ export type Teacher = "youtube" | "reddit" | "uncle" | "aunt" | "friend" | "mom"
 export type Region = "grooming" | "hands" | "money" | "people" | "inner";
 
 export const TITLE = {
-  title: "QUEST LOG",
+  title: "git blame --dad",
   subtitle: "Skills I was supposed to learn from my dad.",
   start: "PRESS START",
 };
@@ -109,7 +109,7 @@ export const MODAL = {
 };
 
 export const RECAP = {
-  header: "git blame --life",
+  header: "git blame --dad",
   dadMeter: "DAD METER",
   dadPresent: "Dad present",
   showedUp: "Showed up",
@@ -137,7 +137,7 @@ export const BLAME = {
   // TODO(Kai): your final line. Left blank, the game uses defaultFinalLine.
   finalLine: "",
   defaultFinalLine: "I'll teach these myself. Every line.",
-  epilogue: "QUEST LOG — for the kids still figuring it out alone.",
+  epilogue: "git blame --dad — for the kids still figuring it out alone.",
   startOwn: "START YOUR OWN QUEST",
   helpLine:
     "If you're going through something heavier, talk to someone you trust, or look up a mentoring program like Big Brothers Big Sisters.",

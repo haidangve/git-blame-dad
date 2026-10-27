@@ -6,7 +6,7 @@ const pixel = Press_Start_2P({ weight: "400", subsets: ["latin"], variable: "--f
 const body = VT323({ weight: "400", subsets: ["latin"], variable: "--ff-body" });
 
 export const metadata: Metadata = {
-  title: "Quest Log",
+  title: "git blame --dad",
   description: "Skills I was supposed to learn from my dad.",
 };
 
