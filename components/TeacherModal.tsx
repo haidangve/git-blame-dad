@@ -190,7 +190,6 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
           <label htmlFor="tm-photo">{MODAL.photoLabel}</label>
           <div className="mt-1 flex items-center gap-3">
             {photo && (
-              // eslint-disable-next-line @next/next/no-img-element
               <img src={photo} alt={`Your photo for ${skill.title}`} className="h-14 w-14 border-4 border-ink object-cover" />
             )}
             <input

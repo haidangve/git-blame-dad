@@ -153,7 +153,6 @@ function Slide({ skill }: { skill: Skill }) {
     <article className="slide-in panel grid max-h-full w-full max-w-5xl gap-4 p-3 sm:p-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
       <div className="flex h-[34dvh] items-center justify-center overflow-hidden border-4 border-ink bg-ink md:h-[50dvh]">
         {skill.photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={skill.photo} alt={skill.memory ?? skill.title} className="h-full w-full object-contain" />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-parchment-2">

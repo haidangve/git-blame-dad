@@ -25,7 +25,6 @@ export function PhotoViewer({ skill, onClose }: { skill: Skill; onClose: () => v
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <figure role="dialog" aria-modal="true" aria-label={skill.title} className="panel modal-in max-w-xl p-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={skill.photo} alt={skill.memory ?? skill.title} className="block max-h-[60dvh] w-full border-4 border-ink object-contain" />
         <figcaption className="mt-3 text-[22px]">
           <span className="font-pixel text-[11px]">{skill.title}</span>

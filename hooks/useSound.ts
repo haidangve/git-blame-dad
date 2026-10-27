@@ -109,7 +109,6 @@ export const sfx = {
       "square",
       0.05,
     ),
-  key: () => notes([[1300 + Math.random() * 300, 0, 0.015]], "square", 0.012),
   line: () => notes([[330, 0, 0.04]], "triangle", 0.05),
   final: () =>
     notes(

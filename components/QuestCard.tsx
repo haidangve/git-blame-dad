@@ -54,7 +54,6 @@ export function QuestCard({ skill, onToggle, onViewPhoto }: Props) {
           aria-label={`${MODAL.viewPhoto}: ${skill.title}`}
           className="h-12 w-12 shrink-0 cursor-zoom-in self-center border-4 border-ink bg-ink"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={skill.photo} alt="" className="h-full w-full object-cover" />
         </button>
       )}
