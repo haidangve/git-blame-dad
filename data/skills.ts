@@ -16,7 +16,11 @@ export type Skill = {
   memory?: string;
   year?: number;
   photo?: string; // e.g. "/photos/tire.jpg" — drop the file in public/photos/
+  /** A side quest the player wrote. Its id is `custom:<uuid>`. */
+  custom?: boolean;
 };
+
+export const SKILL_BY_ID = new Map<string, Skill>();
 
 export const tutorialUrl = (query: string) =>
   `https://www.youtube.com/results?search_query=${encodeURIComponent(query).replace(/%20/g, "+")}`;
@@ -60,6 +64,10 @@ export const SKILLS: Skill[] = [
     // TODO(Kai): your real answer
     done: true, teacher: "friend", teacherName: "Tuan", year: 2017,
     memory: "Smelled every tester in the mall. He picked.",
+  },
+  {
+    id: "haircut", region: "grooming", title: "Get the haircut you asked for", xp: 40,
+    tutorialQuery: "how to tell your barber what haircut you want", pixelIcon: ICONS.scissors,
   },
 
   // ── Hands ─────────────────────────────────────────────────
@@ -108,6 +116,18 @@ export const SKILLS: Skill[] = [
     id: "bbq", region: "hands", title: "BBQ & cook for family", xp: 80,
     tutorialQuery: "how to bbq skewers on charcoal grill", pixelIcon: ICONS.pot,
   },
+  {
+    id: "drive", region: "hands", title: "Drive a car", xp: 100,
+    tutorialQuery: "driving lesson for complete beginners", pixelIcon: ICONS.car,
+  },
+  {
+    id: "oil", region: "hands", title: "Check & change the oil", xp: 60,
+    tutorialQuery: "how to check and change your car oil", pixelIcon: ICONS.wrench,
+  },
+  {
+    id: "drain", region: "hands", title: "Unclog a drain", xp: 40,
+    tutorialQuery: "how to unclog a drain without chemicals", pixelIcon: ICONS.plunger,
+  },
 
   // ── Money ─────────────────────────────────────────────────
   {
@@ -137,6 +157,18 @@ export const SKILLS: Skill[] = [
     // TODO(Kai): your real answer
     done: true, teacher: "self", teacherName: "Trial & Error", year: 2018,
     memory: "Missed one payment. Learned it the expensive way.",
+  },
+  {
+    id: "budget", region: "money", title: "Make a budget", xp: 60,
+    tutorialQuery: "how to make a budget for beginners", pixelIcon: ICONS.piggy,
+  },
+  {
+    id: "lease", region: "money", title: "Rent your first place", xp: 80,
+    tutorialQuery: "first apartment lease what to check", pixelIcon: ICONS.key,
+  },
+  {
+    id: "invest", region: "money", title: "Start investing", xp: 90,
+    tutorialQuery: "how to start investing for beginners index funds", pixelIcon: ICONS.chart,
   },
 
   // ── People ────────────────────────────────────────────────
@@ -168,6 +200,18 @@ export const SKILLS: Skill[] = [
     done: true, teacher: "friend", teacherName: "Tuan", year: 2020,
     memory: "Showed up with pho and didn't ask questions.",
   },
+  {
+    id: "interview", region: "people", title: "Nail a job interview", xp: 90,
+    tutorialQuery: "how to prepare for a job interview", pixelIcon: ICONS.briefcase,
+  },
+  {
+    id: "toast", region: "people", title: "Give a toast", xp: 70,
+    tutorialQuery: "how to give a wedding toast speech", pixelIcon: ICONS.glass,
+  },
+  {
+    id: "friends", region: "people", title: "Make friends as an adult", xp: 100,
+    tutorialQuery: "how to make friends as an adult", pixelIcon: ICONS.friends,
+  },
 
   // ── Inner ─────────────────────────────────────────────────
   {
@@ -198,4 +242,44 @@ export const SKILLS: Skill[] = [
     done: true, teacher: "uncle", teacherName: "Uncle Minh", year: 2022,
     memory: "He drove four hours when I finally called.",
   },
+  {
+    id: "loveyou", region: "inner", title: "Say \"I love you\" first", xp: 110,
+    tutorialQuery: "how to tell family you love them", pixelIcon: ICONS.letter,
+  },
+  {
+    id: "boundary", region: "inner", title: "Set a boundary", xp: 100,
+    tutorialQuery: "how to set healthy boundaries", pixelIcon: ICONS.shield,
+  },
+  {
+    id: "grudge", region: "inner", title: "Let go of a grudge", xp: 120,
+    tutorialQuery: "how to let go of resentment", pixelIcon: ICONS.sun,
+  },
+
+  // ── Backyard ──────────────────────────────────────────────
+  {
+    id: "bike", region: "backyard", title: "Ride a bike", xp: 50,
+    tutorialQuery: "how to ride a bike as an adult", pixelIcon: ICONS.bike,
+  },
+  {
+    id: "swim", region: "backyard", title: "Swim", xp: 70,
+    tutorialQuery: "how to swim for adult beginners", pixelIcon: ICONS.swim,
+  },
+  {
+    id: "throw", region: "backyard", title: "Throw a ball right", xp: 30,
+    tutorialQuery: "how to throw a baseball properly", pixelIcon: ICONS.ball,
+  },
+  {
+    id: "fish", region: "backyard", title: "Go fishing", xp: 50,
+    tutorialQuery: "fishing for beginners how to cast", pixelIcon: ICONS.fish,
+  },
+  {
+    id: "tent", region: "backyard", title: "Pitch a tent", xp: 50,
+    tutorialQuery: "how to pitch a tent for beginners", pixelIcon: ICONS.tent,
+  },
+  {
+    id: "laces", region: "backyard", title: "Tie your shoes", xp: 20,
+    tutorialQuery: "how to tie shoelaces easy", pixelIcon: ICONS.shoe,
+  },
 ];
+
+for (const s of SKILLS) SKILL_BY_ID.set(s.id, s);

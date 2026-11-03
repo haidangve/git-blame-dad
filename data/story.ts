@@ -1,12 +1,16 @@
 // All the words in the game that aren't skill titles live here. Edit freely.
 
 export type Teacher = "youtube" | "reddit" | "uncle" | "aunt" | "friend" | "mom" | "teacher" | "self" | "dad";
-export type Region = "grooming" | "hands" | "money" | "people" | "inner";
+export type Region = "grooming" | "hands" | "money" | "people" | "inner" | "backyard" | "side";
 
 export const TITLE = {
   title: "git blame --dad",
   subtitle: "Skills I was supposed to learn from my dad.",
   start: "PRESS START",
+  continue: "CONTINUE",
+  story: "WATCH KAI'S STORY",
+  hall: "HALL OF BLAME",
+  login: "LOG IN TO COMPARE",
 };
 
 export const REGIONS: { id: Region; name: string; blurb: string }[] = [
@@ -15,7 +19,12 @@ export const REGIONS: { id: Region; name: string; blurb: string }[] = [
   { id: "money", name: "Money", blurb: "Nobody explains this part. You find out by getting it wrong once." },
   { id: "people", name: "People", blurb: "Talking to humans. No tutorial covers the second attempt." },
   { id: "inner", name: "Inner", blurb: "The hardest region. No XP bar shows how long these take." },
+  { id: "backyard", name: "Backyard", blurb: "What other kids learned on a Saturday afternoon. Some of us learned it at twenty-five." },
+  { id: "side", name: "Side Quests", blurb: "The ones nobody put on the list. Write your own." },
 ];
+
+/** Regions with a fixed quest list. Side quests are written by the player. */
+export const MAP_REGIONS: Region[] = ["grooming", "hands", "money", "people", "inner", "backyard"];
 
 export const TEACHERS: Record<Teacher, { label: string; short: string; color: string; icon: string[] }> = {
   youtube: {
@@ -85,6 +94,41 @@ export const QUEST_LOG = {
   settings: "SETTINGS",
   resetSave: "Reset save",
   resetConfirm: "Back to Kai's save?",
+  clearConfirm: "Wipe this log and start over?",
+  clearSave: "Start over",
+  achievements: "BADGES",
+  addSide: "+ WRITE A SIDE QUEST",
+  sideLimit: (max: number) => `Side quest log is full (${max}).`,
+  deleteSide: "Delete this side quest",
+};
+
+/** Rank titles by level. The first entry whose min is <= level wins, so keep them descending. */
+export const RANKS: { min: number; title: string }[] = [
+  { min: 25, title: "The One Who Teaches" },
+  { min: 20, title: "Village Elder" },
+  { min: 15, title: "Self-Made" },
+  { min: 10, title: "Self-Taught" },
+  { min: 6, title: "Journeyman" },
+  { min: 3, title: "Apprentice" },
+  { min: 1, title: "Lost Kid" },
+];
+
+export const SIDE = {
+  title: "NEW SIDE QUEST",
+  label: "What did you have to figure out?",
+  placeholder: "e.g. Talk to a landlord, Hold a baby",
+  create: "ADD QUEST",
+  xp: 40,
+  max: 12,
+};
+
+export const NAV = {
+  home: "git blame --dad",
+  hall: "HALL OF BLAME",
+  login: "LOG IN",
+  story: "Kai's story",
+  me: "MY PROFILE",
+  offline: "Playing as a guest. Progress is saved in this browser only.",
 };
 
 export const MODAL = {
