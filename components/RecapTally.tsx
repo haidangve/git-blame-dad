@@ -9,10 +9,10 @@ import { shortHash, shortlog, tally } from "@/lib/blame";
 // Dad's row sits on "…" this long before resolving. This silence is the whole point. Do not shorten.
 const DAD_PAUSE_MS = 3500;
 
-type Props = { skills: Skill[]; onDone: () => void };
+type Props = { skills: Skill[]; authorName: string; onDone: () => void };
 
 /** The end-of-show count, revealed one row at a time. */
-export function RecapTally({ skills, onDone }: Props) {
+export function RecapTally({ skills, authorName, onDone }: Props) {
   const t = useMemo(() => tally(skills), [skills]);
   const rows = useMemo(() => shortlog(skills), [skills]);
   const others = useMemo(() => rows.filter((r) => r.teacher !== "dad"), [rows]);
@@ -109,7 +109,7 @@ export function RecapTally({ skills, onDone }: Props) {
           {step >= S.final && (
             <div className="fade-in">
               <p className="text-[18px] text-ink/50">
-                [main {shortHash(finalLine)}] Author: {BLAME.authorName}
+                [main {shortHash(finalLine)}] Author: {authorName}
               </p>
               <p className="mt-1 text-[26px] leading-tight sm:text-[30px]">“{finalLine}”</p>
             </div>

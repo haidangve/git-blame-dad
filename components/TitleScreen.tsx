@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import { MOON, MOON_PALETTE } from "@/data/sprites";
 import { TITLE } from "@/data/story";
+import type { Viewer } from "@/lib/viewer";
 import { Hero } from "./Hero";
 import { PixelSprite } from "./PixelSprite";
 
@@ -60,7 +62,16 @@ export function NightSky({ count = 70 }: { count?: number }) {
   );
 }
 
-export function TitleScreen({ onStart }: { onStart: () => void }) {
+type Props = {
+  onStart: () => void;
+  /** Kai's story keeps the original, link-free title screen for presenting. */
+  demo?: boolean;
+  viewer?: Viewer | null;
+  online?: boolean;
+  returning?: boolean;
+};
+
+export function TitleScreen({ onStart, demo = false, viewer = null, online = false, returning = false }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Enter" || e.key === " ") {
@@ -91,9 +102,28 @@ export function TitleScreen({ onStart }: { onStart: () => void }) {
         <Hero scale={6} className="mt-4" />
 
         <button type="button" onClick={onStart} className="btn blink mt-2 text-[14px]">
-          ▶ {TITLE.start}
+          ▶ {returning && !demo ? TITLE.continue : TITLE.start}
         </button>
         <p className="text-[18px] text-parchment/60">ENTER / SPACE</p>
+
+        {!demo && (
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[20px]">
+            <Link href="/story" className="text-parchment/80 underline-offset-4 hover:text-parchment hover:underline">
+              {TITLE.story}
+            </Link>
+            {online && (
+              <Link href="/hall" className="text-parchment/80 underline-offset-4 hover:text-parchment hover:underline">
+                {TITLE.hall}
+              </Link>
+            )}
+            {online && !viewer && (
+              <Link href="/login" className="text-lantern underline-offset-4 hover:underline">
+                {TITLE.login}
+              </Link>
+            )}
+            {viewer?.handle && <span className="text-parchment/60">signed in as @{viewer.handle}</span>}
+          </div>
+        )}
       </div>
 
       {/* Ground the hero stands on. */}

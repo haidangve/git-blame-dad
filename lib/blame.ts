@@ -1,5 +1,5 @@
 import type { Skill, Teacher } from "@/data/skills";
-import { TEACHER_ORDER } from "@/data/story";
+import { REGIONS, TEACHER_ORDER, type Region } from "@/data/story";
 
 // FNV-1a, so the same text always gets the same fake commit hash.
 function fnv(str: string): number {
@@ -56,3 +56,20 @@ export function tally(skills: Skill[]): Tally {
     dadSharePct: totalXP ? Math.round((dadXP / totalXP) * 100) : 0,
   };
 }
+
+export type RegionShare = { region: Region; done: number; total: number; dadShare: number; top?: Teacher };
+
+/** Per region: how much is cleared, how much of it was Dad, and who taught most of it. */
+export function regionBreakdown(skills: Skill[]): RegionShare[] {
+  return REGIONS.map((r) => {
+    const all = skills.filter((s) => s.region === r.id);
+    const t = tally(all);
+    const counts = new Map<Teacher, number>();
+    for (const s of all) if (s.done && s.teacher) counts.set(s.teacher, (counts.get(s.teacher) ?? 0) + 1);
+    const top = [...counts].sort((a, b) => b[1] - a[1])[0]?.[0];
+    return { region: r.id, done: t.quests, total: all.length, dadShare: t.dadSharePct, top };
+  }).filter((r) => r.total > 0);
+}
+
+/** How many different kinds of teacher showed up. Dad counts if he did. */
+export const villageSize = (skills: Skill[]) => new Set(skills.filter((s) => s.done && s.teacher).map((s) => s.teacher)).size;

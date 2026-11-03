@@ -1,39 +1,78 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Skill } from "@/data/skills";
-import { QUEST_LOG } from "@/data/story";
-import type { Progress } from "@/hooks/useSave";
+import { BLAME, QUEST_LOG, SIDE } from "@/data/story";
+import type { Progress, SaveMode } from "@/hooks/useSave";
 import { useSave } from "@/hooks/useSave";
 import { sfx } from "@/hooks/useSound";
+import { achievements, newlyUnlocked, type Achievement } from "@/lib/achievements";
+import { levelFor } from "@/lib/ranks";
+import type { Viewer } from "@/lib/viewer";
+import { AchievementsPanel, AchievementToasts } from "./Achievements";
 import { BlameCarousel } from "./BlameCarousel";
 import { MuteToggle } from "./MuteToggle";
 import { PhotoViewer } from "./PhotoViewer";
 import { QuestLog } from "./QuestLog";
+import { SideQuestModal } from "./SideQuestModal";
 import { TeacherModal } from "./TeacherModal";
 import { TitleScreen } from "./TitleScreen";
 import { XPPops, type Pop } from "./XPPop";
 
 type Screen = "title" | "log" | "blame";
 
-export function Game() {
-  const save = useSave();
+type Props = {
+  mode: SaveMode;
+  viewer?: Viewer | null;
+  online?: boolean;
+};
+
+export function Game({ mode, viewer = null, online = false }: Props) {
+  const save = useSave(mode);
+  const demo = mode.kind === "demo";
   const [screen, setScreen] = useState<Screen>("title");
   const [pending, setPending] = useState<{ skill: Skill; x: number; y: number } | null>(null);
   const [pops, setPops] = useState<Pop[]>([]);
   const [viewing, setViewing] = useState<Skill | null>(null);
+  const [badgesOpen, setBadgesOpen] = useState(false);
+  const [writingSide, setWritingSide] = useState(false);
+  const [toasts, setToasts] = useState<Achievement[]>([]);
   const popId = useRef(0);
+
+  const badges = useMemo(() => achievements(save.skills), [save.skills]);
+  // Badge toasts fire on changes the player makes, never on the initial load.
+  const prevBadges = useRef<Achievement[] | null>(null);
+  useEffect(() => {
+    if (!save.loaded) {
+      prevBadges.current = null;
+      return;
+    }
+    const before = prevBadges.current;
+    prevBadges.current = badges;
+    if (!before) return;
+    const fresh = newlyUnlocked(before, badges);
+    if (!fresh.length) return;
+    setToasts((t) => [...t, ...fresh]);
+    window.setTimeout(() => sfx.badge(), 500);
+    window.setTimeout(() => setToasts((t) => t.filter((x) => !fresh.includes(x))), 4200);
+  }, [badges, save.loaded]);
 
   const start = useCallback(() => setScreen("log"), []);
   const toLog = useCallback(() => setScreen("log"), []);
   const startOwn = useCallback(() => {
+    if (demo) {
+      window.location.href = "/";
+      return;
+    }
     save.clearAll();
     setScreen("log");
-  }, [save]);
+  }, [demo, save]);
+
+  const modalOpen = !!pending || !!viewing || badgesOpen || writingSide;
 
   // Hidden demo key: "B" jumps straight to git blame, ignoring the unlock threshold.
   useEffect(() => {
-    if (screen !== "log" || pending || viewing) return;
+    if (screen !== "log" || modalOpen) return;
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement | null;
       if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable)) return;
@@ -41,9 +80,11 @@ export function Game() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [screen, pending, viewing]);
+  }, [screen, modalOpen]);
   const closeModal = useCallback(() => setPending(null), []);
   const closeViewer = useCallback(() => setViewing(null), []);
+  const closeBadges = useCallback(() => setBadgesOpen(false), []);
+  const closeSide = useCallback(() => setWritingSide(false), []);
 
   const addPop = (pop: Omit<Pop, "id">, delay = 0) => {
     const id = ++popId.current;
@@ -68,7 +109,7 @@ export function Game() {
       sfx.select();
       return;
     }
-    const nextLevel = Math.floor((save.totalXP + skill.xp) / 100) + 1;
+    const nextLevel = levelFor(save.totalXP + skill.xp);
     save.complete(skill.id, p);
     setPending(null);
     addPop({ x, y, text: `+${skill.xp} XP` });
@@ -87,6 +128,26 @@ export function Game() {
     sfx.select();
   };
 
+  const onDeleteSide = () => {
+    if (!pending) return;
+    save.removeCustom(pending.skill.id);
+    setPending(null);
+    sfx.select();
+  };
+
+  const onCreateSide = async (title: string) => {
+    const id = await save.addCustom(title);
+    setWritingSide(false);
+    if (!id) return;
+    sfx.select();
+    // Straight into "who taught you?" so a new side quest is written and cleared in one go.
+    setPending({
+      skill: { id, region: "side", title: title.trim(), xp: SIDE.xp, tutorialQuery: title, pixelIcon: [], custom: true },
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    });
+  };
+
   const need = Math.max(0, QUEST_LOG.blameThreshold - save.doneCount);
   const footer = (
     <div className="flex flex-col items-center gap-3 pb-16">
@@ -97,13 +158,50 @@ export function Game() {
     </div>
   );
 
+  const authorName = demo ? BLAME.authorName : viewer?.displayName || viewer?.handle || "you";
+
   return (
     <>
-      {screen === "title" && <TitleScreen onStart={start} />}
-      {screen === "log" && <QuestLog save={save} onToggle={toggle} onViewPhoto={setViewing} footer={footer} />}
-      {screen === "blame" && <BlameCarousel skills={save.skills} onExit={toLog} onStartOwn={startOwn} />}
-      {pending && <TeacherModal skill={pending.skill} onSave={onSave} onCancel={closeModal} onUncheck={onUncheck} />}
+      {screen === "title" && (
+        <TitleScreen onStart={start} demo={demo} viewer={viewer} online={online} returning={save.doneCount > 0} />
+      )}
+      {screen === "log" && (
+        <QuestLog
+          save={save}
+          viewer={viewer}
+          online={online}
+          badges={badges}
+          onToggle={toggle}
+          onViewPhoto={setViewing}
+          onOpenBadges={() => setBadgesOpen(true)}
+          onWriteSide={() => setWritingSide(true)}
+          footer={footer}
+        />
+      )}
+      {screen === "blame" && (
+        <BlameCarousel
+          skills={save.skills}
+          authorName={authorName}
+          demo={demo}
+          viewer={viewer}
+          online={online}
+          onExit={toLog}
+          onStartOwn={startOwn}
+        />
+      )}
+      {pending && (
+        <TeacherModal
+          skill={pending.skill}
+          onSave={onSave}
+          onCancel={closeModal}
+          onUncheck={onUncheck}
+          onDelete={pending.skill.custom ? onDeleteSide : undefined}
+        />
+      )}
       {viewing && <PhotoViewer skill={viewing} onClose={closeViewer} />}
+      {badgesOpen && <AchievementsPanel badges={badges} onClose={closeBadges} />}
+      {writingSide && <SideQuestModal onCreate={onCreateSide} onCancel={closeSide} />}
+      <AchievementToasts toasts={toasts} />
       <XPPops pops={pops} />
       <MuteToggle />
     </>

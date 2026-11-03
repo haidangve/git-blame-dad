@@ -1,13 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { HERO_OLDER, HERO_PALETTE, NEW_KID, NEW_KID_PALETTE } from "@/data/sprites";
 import { BLAME } from "@/data/story";
+import type { Viewer } from "@/lib/viewer";
 import { PixelSprite } from "./PixelSprite";
 import { NightSky } from "./TitleScreen";
 
-type Props = { onStartOwn: () => void; onBack: () => void; onReplay: () => void };
+type Props = {
+  demo: boolean;
+  viewer: Viewer | null;
+  online: boolean;
+  onStartOwn: () => void;
+  onBack: () => void;
+  onReplay: () => void;
+};
 
-export function Epilogue({ onStartOwn, onBack, onReplay }: Props) {
+export function Epilogue({ demo, viewer, online, onStartOwn, onBack, onReplay }: Props) {
   return (
     <main className="fade-in fixed inset-0 z-40 flex flex-col items-center justify-center overflow-y-auto px-4 pb-6 pt-10 text-center">
       <NightSky count={50} />
@@ -22,9 +31,26 @@ export function Epilogue({ onStartOwn, onBack, onReplay }: Props) {
         <p className="max-w-[34ch] font-pixel text-[13px] leading-[1.7] text-lantern sm:text-[16px]">{BLAME.epilogue}</p>
 
         <div className="flex flex-wrap justify-center gap-3">
-          <button type="button" className="btn" onClick={onStartOwn}>
-            ▶ {BLAME.startOwn}
-          </button>
+          {demo && (
+            <button type="button" className="btn" onClick={onStartOwn}>
+              ▶ {BLAME.startOwn}
+            </button>
+          )}
+          {!demo && online && viewer?.handle && (
+            <Link href={`/u/${viewer.handle}`} className="btn">
+              ▶ MY PROFILE
+            </Link>
+          )}
+          {!demo && online && !viewer && (
+            <Link href="/login?next=/" className="btn">
+              ▶ SAVE & COMPARE
+            </Link>
+          )}
+          {!demo && online && (
+            <Link href="/hall" className="btn btn-ghost">
+              HALL OF BLAME
+            </Link>
+          )}
           <button type="button" className="btn btn-ghost" onClick={onReplay}>
             REPLAY
           </button>

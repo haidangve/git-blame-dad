@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, type DragEvent, type FormEvent } from "react";
 import type { Skill, Teacher } from "@/data/skills";
-import { MODAL, TEACHER_ORDER, TEACHERS } from "@/data/story";
-import type { Progress } from "@/hooks/useSave";
+import { MODAL, QUEST_LOG, TEACHER_ORDER, TEACHERS } from "@/data/story";
+import type { Progress } from "@/lib/progress";
 import { sfx } from "@/hooks/useSound";
 import { compressPhoto } from "@/lib/photo";
 import { PixelSprite } from "./PixelSprite";
@@ -13,12 +13,14 @@ type Props = {
   onSave: (p: Omit<Progress, "done">) => void;
   onCancel: () => void;
   onUncheck: () => void;
+  /** Side quests only: delete the quest itself. */
+  onDelete?: () => void;
 };
 
 const INPUT = "w-full border-4 border-ink bg-parchment-hi px-2 py-1 text-[22px] text-ink placeholder:text-ink/45";
 
 /** Asks who taught a quest. For an already-cleared quest it doubles as the editor (photo, memory, uncheck). */
-export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
+export function TeacherModal({ skill, onSave, onCancel, onUncheck, onDelete }: Props) {
   const editing = !!skill.done;
   const [teacher, setTeacher] = useState<Teacher | null>(skill.teacher ?? null);
   const [name, setName] = useState(skill.teacherName && skill.teacher && skill.teacherName !== TEACHERS[skill.teacher].label ? skill.teacherName : "");
@@ -219,10 +221,19 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck }: Props) {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center justify-end gap-3">
-          {editing && (
-            <button type="button" className="mr-auto text-[20px] underline" onClick={onUncheck}>
-              {MODAL.uncheck}
-            </button>
+          {(editing || onDelete) && (
+            <div className="mr-auto flex flex-col items-start">
+              {editing && (
+                <button type="button" className="text-[20px] underline" onClick={onUncheck}>
+                  {MODAL.uncheck}
+                </button>
+              )}
+              {onDelete && (
+                <button type="button" className="text-[20px] text-[#9b2a1c] underline" onClick={onDelete}>
+                  {QUEST_LOG.deleteSide}
+                </button>
+              )}
+            </div>
           )}
           <button type="button" className="btn btn-ghost" onClick={onCancel}>
             {MODAL.cancel}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ICON_PALETTE } from "@/data/icons";
 import type { Skill, Teacher } from "@/data/skills";
+import type { Viewer } from "@/lib/viewer";
 import { RECAP, REGIONS, TEACHERS } from "@/data/story";
 import { sfx } from "@/hooks/useSound";
 import { blameOrder } from "@/lib/blame";
@@ -16,11 +17,15 @@ const slideMs = (s: Skill) => (s.photo ? 5500 : s.memory ? 2600 : 1600);
 
 type Props = {
   skills: Skill[];
+  authorName: string;
+  demo: boolean;
+  viewer: Viewer | null;
+  online: boolean;
   onExit: () => void;
   onStartOwn: () => void;
 };
 
-export function BlameCarousel({ skills, onExit, onStartOwn }: Props) {
+export function BlameCarousel({ skills, authorName, demo, viewer, online, onExit, onStartOwn }: Props) {
   // Snapshot on open so nothing reshuffles mid-show.
   const snapshot = useRef(skills).current;
   const slides = useMemo(() => blameOrder(snapshot), [snapshot]);
@@ -65,7 +70,8 @@ export function BlameCarousel({ skills, onExit, onStartOwn }: Props) {
     setPhase(slides.length ? "slides" : "tally");
   };
 
-  if (phase === "epilogue") return <Epilogue onStartOwn={onStartOwn} onBack={onExit} onReplay={replay} />;
+  if (phase === "epilogue")
+    return <Epilogue demo={demo} viewer={viewer} online={online} onStartOwn={onStartOwn} onBack={onExit} onReplay={replay} />;
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col overflow-hidden">
@@ -79,7 +85,7 @@ export function BlameCarousel({ skills, onExit, onStartOwn }: Props) {
       </header>
 
       {phase === "tally" ? (
-        <RecapTally skills={snapshot} onDone={() => setPhase("epilogue")} />
+        <RecapTally skills={snapshot} authorName={authorName} onDone={() => setPhase("epilogue")} />
       ) : (
         <>
           <DadMeter seen={slides.slice(0, index + 1)} />
