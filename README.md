@@ -19,7 +19,7 @@ My dad wasn't around. Everything other boys learned from their fathers I learned
 ## How it plays
 
 1. **Title screen.** Night sky, a kid with a backpack. Press Start. From here you can also watch **Kai's story** (the original demo, at `/story`), open the **Hall of Blame**, or log in.
-2. **Quest Log.** 43 skills across six regions: Grooming, Hands, Money, People, Inner and Backyard. Each quest card has a pixel icon, XP and a YouTube tutorial search link. Checking one asks **"WHO TAUGHT YOU THIS?"**: YouTube, Reddit, Uncle, Aunt, Friend, Mom, Teacher/Coach, Trial & Error, or Dad. You can add a name, a year, a one-line memory and a photo. Saving pops `+XP` with an 8-bit blip, levels go up every 100 XP, and each level range has a rank title, from *Lost Kid* to *The One Who Teaches*.
+2. **Quest Log.** 47 skills across six regions: Grooming, Hands, Money, People, Inner and Backyard. Each quest card has a pixel icon, XP and a YouTube tutorial search link. Checking one asks **"WHO TAUGHT YOU THIS?"**: YouTube, Reddit, Uncle, Aunt, Friend, Mom, Teacher/Coach, Trial & Error, or Dad. You can add a name, a year, a one-line memory and a photo. Saving pops `+XP` with an 8-bit blip, levels go up every 100 XP, and each level range has a rank title, from *Lost Kid* to *The One Who Teaches*.
 3. **Side Quests.** The things nobody put on the list. Write up to 12 of your own (40 XP each).
 4. **Badges.** 15 of them, worked out fresh from your log every time: *Raised by the Internet*, *It Takes a Village*, *Both Jobs*, *He Showed Up*, *Every Line*… An 8-bit fanfare plays when one unlocks.
 5. **`git blame me`.** Unlocks at 8 cleared quests (or press **B**). A slideshow of everything you learned, oldest first, with your photos. A **Dad meter** sits above it.

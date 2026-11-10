@@ -122,6 +122,21 @@ export const SKILLS: Skill[] = [
     id: "drain", region: "hands", title: "Unclog a drain", xp: 40,
     tutorialQuery: "how to unclog a drain without chemicals", pixelIcon: ICONS.plunger,
   },
+  {
+    id: "moto", region: "hands", title: "Ride a motorcycle", xp: 90,
+    tutorialQuery: "how to ride a motorcycle for beginners", pixelIcon: ICONS.moto,
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
+  },
+  {
+    id: "cook", region: "hands", title: "Cook a real meal", xp: 70,
+    tutorialQuery: "easy home cooking for beginners", pixelIcon: ICONS.bowl,
+    done: true, teacher: "mom", teacherName: "Mom",
+  },
+  {
+    id: "craft", region: "hands", title: "Make something with your hands", xp: 70,
+    tutorialQuery: "easy handmade art and craft projects for beginners", pixelIcon: ICONS.brush,
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
+  },
 
   // ── Money ─────────────────────────────────────────────────
   {
@@ -244,6 +259,11 @@ export const SKILLS: Skill[] = [
   {
     id: "grudge", region: "inner", title: "Let go of a grudge", xp: 120,
     tutorialQuery: "how to let go of resentment", pixelIcon: ICONS.sun,
+  },
+  {
+    id: "peace", region: "inner", title: "Find inner peace", xp: 120,
+    tutorialQuery: "buddhist meditation for beginners", pixelIcon: ICONS.lotus,
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
   },
 
   // ── Backyard ──────────────────────────────────────────────

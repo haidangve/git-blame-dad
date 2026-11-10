@@ -278,4 +278,10 @@ export const ICONS = {
   tent: ["....k....", "...kak...", "..kaaak..", ".kaakaak.", "kaakkkaak", "kkkkkkkkk"],
   shoe: ["..kkk....", "..kwkk...", "..kwwwkk.", "kkkwwwwwk", "krrrrrrrk", "kkkkkkkkk"],
   scroll: [".kkkkkk.", "kwwwwwwk", ".kwkkwk.", ".kwwwwk.", ".kwkkwk.", ".kwwwwk.", "kwwwwwwk", ".kkkkkk."],
+
+  // ── Uncle Toan and Mom's quests ────────────────────────────
+  moto: [".......kk..", "...kkk..k..", "..krrrk.k..", ".kkkkkkkkk.", "kkk.kdk.kkk", "k.k.....k.k", "kkk.....kkk"],
+  bowl: ["....k..k", "...k..k.", "..k..k..", "kkkkkkkk", "kwwwwwwk", ".kwrrwk.", "..kkkk.."],
+  brush: ["......kk", ".....knk", "....knk.", "...knk..", "..kgk...", ".krrk...", "krrk....", "kkk....."],
+  lotus: ["...kk...", "..kppk..", ".kkppkk.", "kpkppkpk", "kppkkppk", ".kppppk.", "..kkkk..", "cccccccc"],
 } satisfies Record<string, string[]>;
