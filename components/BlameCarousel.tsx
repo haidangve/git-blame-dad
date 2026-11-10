@@ -80,7 +80,8 @@ export function BlameCarousel({ skills, authorName, demo, viewer, online, onExit
       <header className="relative z-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 pt-3">
         <span className="font-pixel text-[10px] text-parchment/70 sm:text-[12px]">$ {RECAP.header}</span>
         <button type="button" onClick={onExit} className="cursor-pointer text-[20px] text-parchment/60 hover:text-parchment">
-          [esc] back
+          <span className="[@media(pointer:fine)]:hidden">{RECAP.prev} back</span>
+          <span className="hidden [@media(pointer:fine)]:inline">[esc] back</span>
         </button>
       </header>
 
@@ -124,8 +125,8 @@ function DadMeter({ seen }: { seen: Skill[] }) {
 
   return (
     <div className="relative z-10 mx-auto mt-2 flex w-full max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4">
-      <div className="flex items-center gap-3">
-        <span className="font-pixel text-[10px] text-lantern sm:text-[11px]">{RECAP.dadMeter}</span>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span className="whitespace-nowrap font-pixel text-[10px] text-lantern sm:text-[11px]">{RECAP.dadMeter}</span>
         <div className="flex gap-1" role="meter" aria-label={RECAP.dadPresent} aria-valuemin={0} aria-valuemax={seen.length} aria-valuenow={dad}>
           {Array.from({ length: 10 }, (_, i) => (
             <span
@@ -135,7 +136,7 @@ function DadMeter({ seen }: { seen: Skill[] }) {
             />
           ))}
         </div>
-        <span className="text-[20px] text-parchment">
+        <span className="whitespace-nowrap text-[20px] text-parchment">
           {RECAP.dadPresent}: <span className="text-lantern">{dad}</span>/{seen.length}
         </span>
       </div>
@@ -163,7 +164,7 @@ function Slide({ skill }: { skill: Skill }) {
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-parchment-2">
             <PixelSprite rows={skill.pixelIcon} palette={ICON_PALETTE} scale={14} />
-            <span className="text-[18px] text-ink/50">{RECAP.noPhoto}</span>
+            <span className="text-[18px] text-ink/50">{skill.memory ? RECAP.noPhoto : RECAP.noPhotoNoMemory}</span>
           </div>
         )}
       </div>

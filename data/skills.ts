@@ -123,11 +123,6 @@ export const SKILLS: Skill[] = [
     tutorialQuery: "how to unclog a drain without chemicals", pixelIcon: ICONS.plunger,
   },
   {
-    id: "moto", region: "hands", title: "Ride a motorcycle", xp: 90,
-    tutorialQuery: "how to ride a motorcycle for beginners", pixelIcon: ICONS.moto,
-    done: true, teacher: "uncle", teacherName: "Uncle Toan",
-  },
-  {
     id: "cook", region: "hands", title: "Cook a real meal", xp: 70,
     tutorialQuery: "easy home cooking for beginners", pixelIcon: ICONS.bowl,
     done: true, teacher: "mom", teacherName: "Mom",
@@ -270,6 +265,11 @@ export const SKILLS: Skill[] = [
   {
     id: "bike", region: "backyard", title: "Ride a bike", xp: 50,
     tutorialQuery: "how to ride a bike as an adult", pixelIcon: ICONS.bike,
+  },
+  {
+    id: "moto", region: "backyard", title: "Ride a motorcycle", xp: 90,
+    tutorialQuery: "how to ride a motorcycle for beginners", pixelIcon: ICONS.moto,
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
   },
   {
     id: "swim", region: "backyard", title: "Swim", xp: 70,

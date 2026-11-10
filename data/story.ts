@@ -158,6 +158,7 @@ export const RECAP = {
   dadPresent: "Dad present",
   showedUp: "Showed up",
   noPhoto: "no photo, just the memory",
+  noPhotoNoMemory: "no photo",
   taughtBy: "TAUGHT BY",
   prev: "◀",
   next: "▶",

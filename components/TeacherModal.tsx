@@ -213,7 +213,10 @@ export function TeacherModal({ skill, onSave, onCancel, onUncheck, onDelete }: P
                 {MODAL.photoRemove}
               </button>
             ) : (
-              <span className="text-ink/50">{dragging ? MODAL.photoDropNow : MODAL.photoDropHint}</span>
+              // Dragging and pasting only make sense with a mouse.
+              <span className="hidden text-ink/50 [@media(pointer:fine)]:inline">
+                {dragging ? MODAL.photoDropNow : MODAL.photoDropHint}
+              </span>
             )}
           </div>
           {photoState === "error" && <p className="mt-1 text-[#9b2a1c]">{MODAL.photoError}</p>}

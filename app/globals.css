@@ -27,6 +27,11 @@
   --color-ink: var(--ink);
 }
 
+html {
+  /* The quest log grows past one screen on some tabs; keep the page from jumping sideways when it does. */
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   background: var(--night);

@@ -122,8 +122,9 @@ export function QuestLog({ save, viewer, online, badges, onToggle, onViewPhoto, 
       <header className="panel-dark flex items-center gap-4 p-3 sm:p-4">
         <Hero scale={3} className="shrink-0" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <div className="flex items-center justify-between gap-2">
-            <h1 className="font-pixel text-[12px] text-parchment sm:text-[16px]">{QUEST_LOG.heading}</h1>
+          {/* On phones the buttons drop under the heading instead of pushing past the panel. */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h1 className="whitespace-nowrap font-pixel text-[12px] text-parchment sm:text-[16px]">{QUEST_LOG.heading}</h1>
             <div className="flex items-center gap-2">
               <span className="hidden text-[20px] text-parchment/80 sm:inline">
                 {save.doneCount}/{total + save.customCount} quests
@@ -156,7 +157,12 @@ export function QuestLog({ save, viewer, online, badges, onToggle, onViewPhoto, 
       )}
       {save.mode === "guest" && online && <p className="text-[19px] text-parchment/60">{NAV.offline}</p>}
 
-      <nav role="tablist" aria-label="Regions" className="flex flex-wrap gap-2 pb-2">
+      {/* One scrolling row on phones; wraps on wider screens. Padding keeps the button shadows inside the scroll box. */}
+      <nav
+        role="tablist"
+        aria-label="Regions"
+        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-3 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-2"
+      >
         {regions.map((r) => {
           const all = save.skills.filter((s) => s.region === r.id);
           const done = all.filter((s) => s.done).length;
@@ -167,7 +173,10 @@ export function QuestLog({ save, viewer, online, badges, onToggle, onViewPhoto, 
               type="button"
               role="tab"
               aria-selected={selected}
-              onClick={() => setRegion(r.id)}
+              onClick={(e) => {
+                setRegion(r.id);
+                e.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+              }}
               className={`btn shrink-0 px-3 py-2 text-[10px] sm:text-[11px] ${selected ? "" : "btn-ghost"}`}
             >
               {r.name} <span className="opacity-70">{r.id === "side" && !all.length ? "+" : `${done}/${all.length}`}</span>

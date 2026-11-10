@@ -61,8 +61,12 @@ export function RecapTally({ skills, authorName, onDone }: Props) {
     return () => window.clearTimeout(id);
   }, [step, schedule, S.final, S.dadRow, S.dadResolved]);
 
-  const years =
-    t.firstYear && t.lastYear ? `${t.firstYear} → ${t.lastYear} · ${t.lastYear - t.firstYear} years` : "—";
+  const span = t.firstYear && t.lastYear ? t.lastYear - t.firstYear : 0;
+  const years = !t.firstYear || !t.lastYear
+    ? "—"
+    : span === 0
+      ? `${t.firstYear}`
+      : `${t.firstYear} → ${t.lastYear} · ${span} year${span === 1 ? "" : "s"}`;
 
   return (
     <main className="relative z-10 flex min-h-0 flex-1 overflow-y-auto px-4 py-4">
