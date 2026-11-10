@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import { MOON, MOON_PALETTE } from "@/data/sprites";
-import { TITLE } from "@/data/story";
+import { STORY_PUBLIC, TITLE } from "@/data/story";
 import type { Viewer } from "@/lib/viewer";
 import { Hero } from "./Hero";
 import { PixelSprite } from "./PixelSprite";
@@ -108,9 +108,11 @@ export function TitleScreen({ onStart, demo = false, viewer = null, online = fal
 
         {!demo && (
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[20px]">
-            <Link href="/story" className="text-parchment/80 underline-offset-4 hover:text-parchment hover:underline">
-              {TITLE.story}
-            </Link>
+            {STORY_PUBLIC && (
+              <Link href="/story" className="text-parchment/80 underline-offset-4 hover:text-parchment hover:underline">
+                {TITLE.story}
+              </Link>
+            )}
             {online && (
               <Link href="/hall" className="text-parchment/80 underline-offset-4 hover:text-parchment hover:underline">
                 {TITLE.hall}

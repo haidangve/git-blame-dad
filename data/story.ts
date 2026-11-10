@@ -133,7 +133,7 @@ export const NAV = {
 
 export const MODAL = {
   question: "WHO TAUGHT YOU THIS?",
-  namePlaceholder: "Their name (optional), e.g. Uncle Minh",
+  namePlaceholder: "Their name (optional), e.g. Uncle Toan",
   memoryPlaceholder: "One line of memory, e.g. summer 2012, in the parking lot",
   yearLabel: "Year",
   save: "SAVE",
@@ -174,6 +174,9 @@ export const RECAP = {
     `${quests} of ${total} quests · ${xp} XP`,
   continue: "CONTINUE ▶",
 };
+
+// Flip to true once every seeded answer in data/skills.ts is real (no TODO(Kai) left).
+export const STORY_PUBLIC = false;
 
 export const BLAME = {
   // TODO(Kai): your name for the final commit

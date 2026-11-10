@@ -12,7 +12,7 @@ export type Skill = {
   pixelIcon: string[];
   done?: boolean;
   teacher?: Teacher;
-  teacherName?: string; // "Uncle Minh"
+  teacherName?: string; // "Uncle Toan"
   memory?: string;
   year?: number;
   photo?: string; // e.g. "/photos/tire.jpg" — drop the file in public/photos/
@@ -74,9 +74,7 @@ export const SKILLS: Skill[] = [
   {
     id: "tire", region: "hands", title: "Change a tire", xp: 80,
     tutorialQuery: "how to change a flat tire", pixelIcon: ICONS.tire,
-    // TODO(Kai): your real answer
-    done: true, teacher: "uncle", teacherName: "Uncle Minh", year: 2012,
-    memory: "Summer 2012, in the parking lot. He let me do every bolt.",
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
   },
   {
     id: "jump", region: "hands", title: "Jump-start a car", xp: 70,
@@ -88,16 +86,12 @@ export const SKILLS: Skill[] = [
   {
     id: "drill", region: "hands", title: "Use a drill", xp: 50,
     tutorialQuery: "how to use a power drill for beginners", pixelIcon: ICONS.drill,
-    // TODO(Kai): your real answer
-    done: true, teacher: "self", teacherName: "Trial & Error", year: 2016,
-    memory: "Three holes in the wall where one shelf should be.",
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
   },
   {
     id: "tap", region: "hands", title: "Fix a leaky tap", xp: 60,
     tutorialQuery: "how to fix a leaky faucet", pixelIcon: ICONS.drop,
-    // TODO(Kai): your real answer
-    done: true, teacher: "youtube", teacherName: "YouTube", year: 2021,
-    memory: "First apartment. Wrong washer, twice.",
+    done: true, teacher: "uncle", teacherName: "Uncle Toan",
   },
   {
     id: "steak", region: "hands", title: "Grill a steak", xp: 50,
@@ -238,9 +232,6 @@ export const SKILLS: Skill[] = [
   {
     id: "help", region: "inner", title: "Ask for help", xp: 120,
     tutorialQuery: "how to ask for help when you need it", pixelIcon: ICONS.lifebuoy,
-    // TODO(Kai): your real answer
-    done: true, teacher: "uncle", teacherName: "Uncle Minh", year: 2022,
-    memory: "He drove four hours when I finally called.",
   },
   {
     id: "loveyou", region: "inner", title: "Say \"I love you\" first", xp: 110,
