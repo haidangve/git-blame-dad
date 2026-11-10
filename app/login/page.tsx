@@ -31,6 +31,11 @@ export default async function LoginPage({ searchParams }: Props) {
             NEXT_PUBLIC_SUPABASE_ANON_KEY to enable them.
           </p>
         )}
+        <p className="mt-4 text-[18px] text-ink/70">
+          <a className="underline" href="/privacy">
+            What gets saved, and who can see it
+          </a>
+        </p>
       </section>
     </PageShell>
   );
