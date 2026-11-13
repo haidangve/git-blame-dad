@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: "git blame --dad",
   description: "Skills I was supposed to learn from my dad.",
+  // The image itself comes from app/opengraph-image.tsx.
+  openGraph: {
+    title: "git blame --dad",
+    description: "A pixel-art quest log of skills I was supposed to learn from my dad.",
+    siteName: "git blame --dad",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = { themeColor: "#0f1330", width: "device-width", initialScale: 1 };
